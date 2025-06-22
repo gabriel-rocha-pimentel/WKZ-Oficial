@@ -39,8 +39,8 @@ function App() {
         </main>
         <Footer />
         <Toaster />
+        <Analytics />
       </div>
-      <Analytics />
     </Router>
   );
 }
