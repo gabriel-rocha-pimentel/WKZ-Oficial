@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "buildCommand": "yarn build",
+  "outputDirectory": "dist",
+    "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
+    }
+  ],
+  "routes": [
+    { "src": "/.*\\.(js|css|png|jpg|jpeg|svg|ico|json|woff2?)$", "dest": "/$&" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}

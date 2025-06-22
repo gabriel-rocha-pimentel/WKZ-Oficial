@@ -1,0 +1,21 @@
+{
+  "name": "Clã WKZ Oficial",
+  "short_name": "WKZ Oficial",
+  "description": "Portal oficial da comunidade gamer Clã WKZ Oficial. Junte-se a nós!",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0D0D0D",
+  "theme_color": "#E10600",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
