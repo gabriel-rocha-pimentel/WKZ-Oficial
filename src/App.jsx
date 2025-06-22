@@ -36,10 +36,10 @@ function App() {
         <Navbar />
         <main className="pt-20 flex-grow">
           <AppRoutes />
+          <Analytics />
         </main>
         <Footer />
         <Toaster />
-        <Analytics />
       </div>
     </Router>
   );
