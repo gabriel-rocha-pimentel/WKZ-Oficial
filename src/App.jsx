@@ -11,6 +11,7 @@ import AdminPage from '@/pages/AdminPage';
 import ContactPage from '@/pages/ContactPage';
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage';
 import PageWrapper from '@/components/PageWrapper';
+import { Analytics } from "@vercel/analytics/next"
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -39,6 +40,7 @@ function App() {
         <Footer />
         <Toaster />
       </div>
+      <Analytics />
     </Router>
   );
 }
