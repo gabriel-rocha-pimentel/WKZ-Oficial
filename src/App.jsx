@@ -11,7 +11,6 @@ import AdminPage from '@/pages/AdminPage';
 import ContactPage from '@/pages/ContactPage';
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage';
 import PageWrapper from '@/components/PageWrapper';
-import { Analytics } from "@vercel/analytics/next"
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -36,7 +35,6 @@ function App() {
         <Navbar />
         <main className="pt-20 flex-grow">
           <AppRoutes />
-          <Analytics />
         </main>
         <Footer />
         <Toaster />
