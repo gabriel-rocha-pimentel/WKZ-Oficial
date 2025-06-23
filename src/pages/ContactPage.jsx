@@ -42,6 +42,57 @@ const ContactPage = () => {
     return <div className="min-h-screen flex items-center justify-center bg-wkz-black"><Loader2 className="w-16 h-16 animate-spin text-wkz-red" /></div>;
   }
 
+  // Função utilitária para gerar a URL correta de contato
+  const getContactUrl = (contact) => {
+    const type = contact.type.toLowerCase();
+    const value = contact.value;
+    if (type.includes('mail')) {
+      return `http://mailto:${value}`;
+    }
+    if (type.includes('whatsapp')) {
+      // Remove caracteres não numéricos do telefone
+      const phone = value.replace(/\D/g, '');
+      return `https://api.whatsapp.com/send?phone=${phone}`;
+    }
+    if (type.includes('discord')) {
+      // Se for um convite, tenta detectar se é um link ou só o código
+      if (value.startsWith('http')) {
+        return value;
+      }
+      return `https://discord.gg/${value}`;
+    }
+    if (type.includes('telegram')) {
+      // username ou link
+      if (value.startsWith('http')) {
+        return value;
+      }
+      return `https://t.me/${value.replace('@', '')}`;
+    }
+    if (type.includes('instagram')) {
+      if (value.startsWith('http')) {
+        return value;
+      }
+      return `https://instagram.com/${value.replace('@', '')}`;
+    }
+    if (type.includes('twitter') || type.includes('x.com')) {
+      if (value.startsWith('http')) {
+        return value;
+      }
+      return `https://twitter.com/${value.replace('@', '')}`;
+    }
+    if (type.includes('facebook')) {
+      if (value.startsWith('http')) {
+        return value;
+      }
+      return `https://facebook.com/${value}`;
+    }
+    // fallback: se for link, retorna, senão não faz nada
+    if (value.startsWith('http')) {
+      return value;
+    }
+    return '#';
+  };
+
   return (
     <>
       <SEO 
@@ -71,7 +122,7 @@ const ContactPage = () => {
               {contacts.map((contact, index) => (
                 <motion.a
                   key={contact.id}
-                  href={contact.value.startsWith('http') ? contact.value : `mailto:${contact.value}`}
+                  href={getContactUrl(contact)}
                   target="_blank"
                   rel="noopener noreferrer"
                   initial={{ opacity: 0, y: 30 }}
