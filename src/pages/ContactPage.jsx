@@ -1,97 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { supabase } from '@/lib/supabaseClient';
-import { useToast } from '@/components/ui/use-toast';
-import { Loader2, Phone, Mail, MessageSquare, ExternalLink, Share2 } from 'lucide-react';
+import { ExternalLink, Phone, Loader2 } from 'lucide-react';
 import SEO from '@/components/SEO';
+import { useContact } from '@/hooks/useContact';
 
 const ContactPage = () => {
-  const [contacts, setContacts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
-
-  useEffect(() => {
-    const fetchContacts = async () => {
-      setLoading(true);
-      try {
-        const { data, error } = await supabase
-          .from('contacts')
-          .select('*')
-          .eq('is_active', true)
-          .order('created_at');
-        if (error) throw error;
-        setContacts(data);
-      } catch (error) {
-        toast({ title: "Erro ao carregar contatos", description: "Não foi possível buscar os contatos.", variant: "destructive" });
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchContacts();
-  }, [toast]);
-
-  const getContactIcon = (type) => {
-    const lowerType = type.toLowerCase();
-    if (lowerType.includes('mail')) return <Mail size={28} className="text-wkz-yellow" />;
-    if (lowerType.includes('whatsapp')) return <MessageSquare size={28} className="text-wkz-yellow" />;
-    if (lowerType.includes('discord')) return <Share2 size={28} className="text-wkz-yellow" />;
-    return <Phone size={28} className="text-wkz-yellow" />;
-  };
+  const { contacts, loading, getContactIcon, getContactUrl } = useContact();
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center bg-wkz-black"><Loader2 className="w-16 h-16 animate-spin text-wkz-red" /></div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-wkz-black">
+        <Loader2 className="w-16 h-16 animate-spin text-wkz-red" />
+      </div>
+    );
   }
-
-  // Função utilitária para gerar a URL correta de contato
-  const getContactUrl = (contact) => {
-    const type = contact.type.toLowerCase();
-    const value = contact.value;
-    if (type.includes('mail')) {
-      return `http://mailto:${value}`;
-    }
-    if (type.includes('whatsapp')) {
-      // Remove caracteres não numéricos do telefone
-      const phone = value.replace(/\D/g, '');
-      return `https://api.whatsapp.com/send?phone=${phone}`;
-    }
-    if (type.includes('discord')) {
-      // Se for um convite, tenta detectar se é um link ou só o código
-      if (value.startsWith('http')) {
-        return value;
-      }
-      return `https://discord.gg/${value}`;
-    }
-    if (type.includes('telegram')) {
-      // username ou link
-      if (value.startsWith('http')) {
-        return value;
-      }
-      return `https://t.me/${value.replace('@', '')}`;
-    }
-    if (type.includes('instagram')) {
-      if (value.startsWith('http')) {
-        return value;
-      }
-      return `https://instagram.com/${value.replace('@', '')}`;
-    }
-    if (type.includes('twitter') || type.includes('x.com')) {
-      if (value.startsWith('http')) {
-        return value;
-      }
-      return `https://twitter.com/${value.replace('@', '')}`;
-    }
-    if (type.includes('facebook')) {
-      if (value.startsWith('http')) {
-        return value;
-      }
-      return `https://facebook.com/${value}`;
-    }
-    // fallback: se for link, retorna, senão não faz nada
-    if (value.startsWith('http')) {
-      return value;
-    }
-    return '#';
-  };
 
   return (
     <>
